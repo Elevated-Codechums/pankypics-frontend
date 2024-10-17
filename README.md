@@ -1,1 +1,1 @@
-# pankypics-frontend
+# panky-pics
