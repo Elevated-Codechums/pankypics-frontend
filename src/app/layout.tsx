@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/libs/utils";
 import { afacad, raleway } from "@/libs/fonts";
-import Link from "next/link";
 import Provider from "@/libs/Providers";
+import Navbar from "@/Components/Header/Navbar";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -18,14 +18,8 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={cn(afacad, raleway, "antialiased")}>
-				<div>
-					<Link href="/">Home</Link>
-					<Link href="/admin">Admin Panel</Link>
-					<Link href="/admin/login">Login Page</Link>
-				</div>
-				<Provider>
-					<div>{children}</div>
-				</Provider>
+				<Navbar />
+				<Provider>{children}</Provider>
 			</body>
 		</html>
 	);
