@@ -16,13 +16,15 @@ export default function Login() {
 		password: string;
 	};
 
+	const mutation = useMutation({
+		mutationFn: (newLogin: FormValues) => {
+			return axios.post("http://localhost:4000/login", newLogin);
+		},
+	});
+
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
-		// const mutation: any = useMutation<any>({
-		// 	mutationFn: (newLogin) => {
-		// 		return axios.post("http://localhost:4000/login", newLogin);
-		// 	},
-		// });
+		mutation.mutate(data);
 		console.log("Form Submitted");
 	};
 
