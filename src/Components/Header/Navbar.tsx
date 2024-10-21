@@ -24,7 +24,7 @@ export default function Navbar() {
 			initial="hidden"
 			animate="visible"
 		>
-			<div className="flex items-center justify-between px-10 py-1 bg-gray rounded-full text-white border border-white drop-shadow-md">
+			<div className="flex items-center justify-between px-10 py-1 bg-gray backdrop-blur-2xl rounded-full text-white border border-white drop-shadow-md bg-opacity-50">
 				<div className="">
 					<Link href="/">
 						<span className="font-qwitcher_grypen font-bold text-3xl">

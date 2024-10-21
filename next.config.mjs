@@ -29,6 +29,9 @@ const nextConfig = {
 
 		return config;
 	},
+	images: {
+		domains: ['cdn.myportfolio.com'],
+	},
 };
 
 export default nextConfig;
