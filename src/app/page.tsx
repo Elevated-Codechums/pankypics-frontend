@@ -1,7 +1,19 @@
+import About from "@/Components/Home/About";
+import AlbumSlider from "@/Components/Home/AlbumSlider";
+import Contact from "@/Components/Home/Contact";
+import CTA from "@/Components/Home/CTA";
+import GridLayout from "@/Components/Home/GridLayout";
+import Hero from "@/Components/Home/Hero";
+
 export default function Home() {
   return (
     <div>
-      <h1 className="text-3xl font-bold font-raleway">Home page</h1>
+      <Hero />
+      <GridLayout />
+      <AlbumSlider />
+      <About />
+      <CTA />
+      <Contact />
     </div>
   );
 }
