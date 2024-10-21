@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/libs/utils";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import axios from "axios";
@@ -18,13 +18,17 @@ export default function Login() {
         key: string;
 	};
 
+	const mutation = useMutation({
+		mutationFn: (formData: FormValues) => {
+			return axios.post("http://localhost:4000/register", formData);
+		},
+	});
+
+
+
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
-		// const mutation: any = useMutation<any>({
-		// 	mutationFn: (newRegister) => {
-		// 		return axios.post("http://localhost:4000/register", newRegister);
-		// 	},
-		// });
+		mutation.mutate(data);
 		console.log("Form Submitted");
 	};
 

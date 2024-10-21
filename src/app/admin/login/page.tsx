@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/libs/utils";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import axios from "axios";
@@ -16,13 +16,15 @@ export default function Login() {
 		password: string;
 	};
 
+	const mutation = useMutation({
+		mutationFn: (newLogin: FormValues) => {
+			return axios.post("http://localhost:4000/login", newLogin);
+		},
+	});
+
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
-		// const mutation: any = useMutation<any>({
-		// 	mutationFn: (newLogin) => {
-		// 		return axios.post("http://localhost:4000/login", newLogin);
-		// 	},
-		// });
+		mutation.mutate(data);
 		console.log("Form Submitted");
 	};
 
@@ -112,8 +114,8 @@ export default function Login() {
 				/>
 				<button
 					className={cn(
-						"bg-gray",
-						"hover:opacity-95",
+						"bg-gray-900",
+						"hover:bg-gray-700",
 						"text-white",
 						"font-bold",
 						"py-2 px-4",
