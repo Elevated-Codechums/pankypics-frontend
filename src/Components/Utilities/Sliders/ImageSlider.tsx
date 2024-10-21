@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import ChevronLeft from "@/assets/chevron-left.svg"
-import ChevronRight from "@/assets/chevron-right.svg"
+// import ChevronLeft from "@/assets/chevron-left.svg"
+// import ChevronRight from "@/assets/chevron-right.svg"
 import { motion } from "framer-motion";
 
 interface ImageSliderProps {
@@ -9,33 +9,41 @@ interface ImageSliderProps {
 	interval: number;
 }
 
+const variants = {
+	enter: (direction: number) => {
+		return {
+			x: direction > 0 ? 1000 : -1000,
+			opacity: 0,
+		};
+	},
+	center: {
+		zIndex: 1,
+		x: 0,
+		opacity: 1,
+	},
+	exit: (direction: number) => {
+		return {
+			zIndex: 0,
+			x: direction > 0 ? -1000 : 1000,
+			opacity: 0,
+		};
+	},
+};
+
 export default function ImageSlider({ images, interval }: ImageSliderProps) {
-	const [index, setIndex] = useState(0);
+	const [[index, direction], setIndex] = useState([0, 0]);
 
-	const prevSlide = () => {
-		setIndex(index - 1);
-		// if first image go to last image
-		if (index === 0) {
-			setIndex(images.length - 1);
-		}
-	};
+	// const prevSlide = () => {
+	// 	setIndex([index === 0 ? images.length - 1 : index - 1, -1]);
+	// };
 
-	const nextSlide = () => {
-		setIndex(index + 1);
-		// if last image go to first image
-		if (index === images.length - 1) {
-			setIndex(0);
-		}
-	};
-
+	// const nextSlide = () => {
+	// 	setIndex([index === images.length - 1 ? 0 : index + 1, 1]);
+	// };
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			setIndex(index + 1);
-			// if last image go to first image
-			if (index === images.length - 1) {
-				setIndex(0);
-			}
+			setIndex([index === images.length - 1 ? 0 : index + 1, 1]);
 		}, interval);
 
 		return () => {
@@ -44,13 +52,22 @@ export default function ImageSlider({ images, interval }: ImageSliderProps) {
 	}, [index, images.length, interval]);
 
 	return (
-		<div className="relative w-full min-h-screen">
-			<div
-				className="absolute w-full h-full flex items-center justify-center"
+		<div className="relative w-full h-screen overflow-hidden">
+			<motion.div
+				className="absolute inset-0 w-full h-full flex items-center justify-center"
 				style={{ backgroundImage: `url(${images[index]})` }}
-			></div>
-            <div className="absolute w-full h-full bg-black opacity-50"></div>
-			<div >
+				key={index}
+				variants={variants}
+				initial="enter"
+				animate="center"
+				exit="exit"
+				custom={direction}
+				transition={{
+					x: { type: "spring", stiffness: 300, damping: 30 },
+					opacity: { duration: 0.2 },
+				}}
+			></motion.div>
+			{/* <div>
 				<div className="absolute top-1/2 left-0 transform -translate-y-1/2">
 					<button
 						onClick={prevSlide}
@@ -64,10 +81,10 @@ export default function ImageSlider({ images, interval }: ImageSliderProps) {
 						onClick={nextSlide}
 						className="px-4 py-2 bg-gray rounded-full text-white"
 					>
-                        <ChevronRight />
+						<ChevronRight />
 					</button>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }

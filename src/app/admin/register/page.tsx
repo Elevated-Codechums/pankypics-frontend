@@ -168,8 +168,8 @@ export default function Login() {
 				/>
 				<button
 					className={cn(
-						"bg-gray-900",
-						"hover:bg-gray-700",
+						"bg-gray",
+						"hover:opacity-95",
 						"text-white",
 						"font-bold",
 						"py-2 px-4",
@@ -177,7 +177,7 @@ export default function Login() {
 						"rounded"
 					)}
 				>
-					Login
+					Register
 				</button>
 			</form>
 			<DevTool control={control} />
