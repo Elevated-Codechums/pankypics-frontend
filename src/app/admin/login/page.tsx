@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/libs/utils";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import axios from "axios";
@@ -114,8 +114,8 @@ export default function Login() {
 				/>
 				<button
 					className={cn(
-						"bg-gray",
-						"hover:opacity-95",
+						"bg-gray-900",
+						"hover:bg-gray-700",
 						"text-white",
 						"font-bold",
 						"py-2 px-4",
