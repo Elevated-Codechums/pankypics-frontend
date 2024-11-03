@@ -1,5 +1,4 @@
-import { Button } from "../Utilities/Buttons";
-import ExternalLink from "@/assets/external-link.svg";
+import { SectionTitle } from "../Utilities/Headings/SectionTitle";
 import { LandscapeSlides } from "../Utilities/Slides/Slides";
 
 const landscapeGrids = [
@@ -29,42 +28,22 @@ const landscapeGrids = [
     }
 ];
 
-// const portraitGrids = [
-//     {
-//         id: 0,
-//         imgSrc: "https://cdn.myportfolio.com/37617585-de9b-43dd-9ca3-2837cbfa4d71/a14fd7c9-3239-4266-acc5-32d682e39daa_rw_1920.jpg?h=928414bc836b45c5e8981956d42fc0e3",
-//     },
-//     {
-//         id: 1,
-//         imgSrc: "https://cdn.myportfolio.com/37617585-de9b-43dd-9ca3-2837cbfa4d71/5dfe1d4d-3f2e-412e-ad3d-92959502c51a_rw_1920.jpg?h=796d5523bbae5e2b4629252ffe142a2e",
-//     },
-//     {
-//         id: 2,
-//         imgSrc: "https://cdn.myportfolio.com/37617585-de9b-43dd-9ca3-2837cbfa4d71/ae1eb989-8b73-4a16-aecf-cc6de1ed33f4_rw_1920.jpg?h=9c53f49961adde5183ee183253eb324c",
-//     },
-//     {
-//         id: 3,
-//         imgSrc: "https://cdn.myportfolio.com/37617585-de9b-43dd-9ca3-2837cbfa4d71/cfa0a787-6aab-4d96-85c3-2be0cdb1d52c_rw_1920.jpg?h=b1c81beae1ee469eda6de6a1278423a7",
-//     },
-// ];
+interface LatestCapturesProps {
+    heading: string;
+    buttonText: string;
+}
 
-export default function LatestCaptures() {
+
+export default function LatestCaptures(
+    { heading, buttonText }: LatestCapturesProps
+) {
 	return (
 		<div
 			id="#myLatestCaptures"
-			className="min-h-screen flex flex-col items-center justify-center gap-10 mt-20"
+			className="min-h-screen flex flex-col items-center gap-10 mt-20"
 		>
-			<div className="flex items-center justify-between w-full px-40">
-				<h1 className="font-bold font-afacad text-6xl">
-					My Latest Captures
-				</h1>
-				<Button variant="default" className="font-raleway font-bold">
-					<span>View More</span>
-					<span>
-						<ExternalLink className="w-4 h-4 ml-2" />
-					</span>
-				</Button>
-			</div>
+            <SectionTitle heading={heading} buttonText={buttonText} buttonLink="latest-captures" />
+            
 			<div className="flex flex-col gap-10 items-center justify-center">
 				<LandscapeSlides images={landscapeGrids} interval={5000} />
 			</div>
