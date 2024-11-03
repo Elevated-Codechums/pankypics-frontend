@@ -5,17 +5,36 @@ import Instagram from "../../assets/instagram.svg";
 import Menu from "./Menu";
 import HamburgerOpen from "../../assets/hamburger-open.svg";
 import HamburgerClose from "../../assets/hamburger-close.svg";
-import { useState } from "react";
-import { motion } from "framer-motion";
-
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const menuRef = useRef<HTMLDivElement>(null);
 
 	const navbarVariants = {
 		hidden: { opacity: 0, y: -50 },
 		visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 	};
+
+	const menuVariants = {
+		hidden: { opacity: 0, y: -20 },
+		visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+		exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+	};
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [menuRef]);
 
 	return (
 		<motion.div
@@ -25,7 +44,7 @@ export default function Navbar() {
 			animate="visible"
 		>
 			<div className="flex items-center justify-between px-10 py-1 bg-gray backdrop-blur-2xl rounded-full text-white border border-white drop-shadow-md bg-opacity-50">
-				<div className="">
+				<div>
 					<Link href="/">
 						<span className="font-qwitcher_grypen font-bold text-3xl">
 							PankyPics
@@ -37,7 +56,7 @@ export default function Navbar() {
 				</div>
 				<div className="min-[841px]:flex hidden">
 					<Link href="/">
-						<span className="">
+						<span>
 							<Instagram />
 						</span>
 					</Link>
@@ -50,12 +69,15 @@ export default function Navbar() {
 					)}
 				</div>
 			</div>
-			{
-				isOpen && (
+			<AnimatePresence>
+				{isOpen && (
 					<motion.div
+						ref={menuRef}
 						className="flex flex-col items-center justify-center bg-gray rounded-lg text-white border border-white drop-shadow-md mt-5 gap-5 py-5"
-						initial={{ opacity: 0, y: -20 }}
-						animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
+						initial="hidden"
+						animate="visible"
+						exit="exit"
+						variants={menuVariants}
 					>
 						<Menu />
 						<Link href="/">
@@ -64,8 +86,8 @@ export default function Navbar() {
 							</span>
 						</Link>
 					</motion.div>
-				)
-			}
+				)}
+			</AnimatePresence>
 		</motion.div>
 	);
 }

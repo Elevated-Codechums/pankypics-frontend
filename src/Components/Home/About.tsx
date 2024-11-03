@@ -1,7 +1,31 @@
-export default function About() {
+import { SectionTitle } from "../Utilities/Headings/SectionTitle";
+import { UrlObject } from 'url';
+
+interface ButtonInfo {
+    id: number;
+    buttonText: string;
+    buttonLink: string | UrlObject;
+    buttonSVG: React.ReactNode;
+}
+
+interface AboutProps {
+    heading: string;
+    buttonText: string;
+    buttonLink: string | UrlObject;
+}
+
+export default function About({
+    heading,
+    buttonText,
+    buttonLink,
+}: AboutProps) {
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <h1 className="font-bold font-afacad text-3xl">About me</h1>
+            <SectionTitle
+                heading={heading}
+                buttonText={buttonText}
+                buttonLink={buttonLink}
+            />
         </div>
-    )
+    );
 }

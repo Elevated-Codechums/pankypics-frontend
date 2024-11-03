@@ -17,12 +17,14 @@ const buttonVariants = cva(
           'bg-black backdrop-blur-sm bg-opacity-50 border border-white hover:bg-gray text-white',
         subtle:
           'bg-slate-100 text-slate-900 hover:bg-slate-200',
+        white:
+          'bg-white text-black hover:bg-gray-100',
         ghost:
           'bg-transparent dark:bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-100 dark:hover:text-slate-100 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent',
         link: 'bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-300 hover:bg-transparent dark:hover:bg-transparent',
       },
       size: {
-        default: 'h-5 p-6 text-xl',
+        default: 'min-[775px]:h-5 min-[548px]:h-2 min-[775px]:p-6 min-[548px]:p-3 p-2 min-[775px]:text-xl min-[548px]:text-lg text-sm',
         lg: 'h-10 px-8 rounded-full',
       },
     },
