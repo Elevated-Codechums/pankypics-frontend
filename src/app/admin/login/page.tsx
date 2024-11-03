@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import axios from "axios";
+import { Button } from "@/Components/Utilities/Buttons";
 
 export default function Login() {
 	const form = useForm<FormValues>();
@@ -79,8 +80,9 @@ export default function Login() {
 					id="email"
 					{...register("email", {
 						required: "Email is required",
+						// validate email address with all types of characters
 						pattern: {
-							value: /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}]+@[a-zA-Z0-9.-]+(?:\.[a-zA-Z0-9-]+)*$/,
+							value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 							message: "Invalid email address",
 						},
 					})}
@@ -112,19 +114,7 @@ export default function Login() {
 						},
 					})}
 				/>
-				<button
-					className={cn(
-						"bg-gray-900",
-						"hover:bg-gray-700",
-						"text-white",
-						"font-bold",
-						"py-2 px-4",
-						"w-full",
-						"rounded"
-					)}
-				>
-					Login
-				</button>
+				<Button>Login</Button>
 			</form>
 			<DevTool control={control} />
 		</div>

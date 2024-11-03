@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import axios from "axios";
+import { Button } from "@/Components/Utilities/Buttons";
 
 export default function Login() {
 	const form = useForm<FormValues>();
@@ -170,19 +171,9 @@ export default function Login() {
                         }
 					})}
 				/>
-				<button
-					className={cn(
-						"bg-gray",
-						"hover:opacity-95",
-						"text-white",
-						"font-bold",
-						"py-2 px-4",
-						"w-full",
-						"rounded"
-					)}
-				>
+				<Button>
 					Register
-				</button>
+				</Button>
 			</form>
 			<DevTool control={control} />
 		</div>
