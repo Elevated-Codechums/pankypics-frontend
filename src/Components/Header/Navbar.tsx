@@ -7,10 +7,14 @@ import HamburgerOpen from "../../assets/hamburger-open.svg";
 import HamburgerClose from "../../assets/hamburger-close.svg";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/libs/utils";
+import useScrollState from "@/Hooks/useScrollState";
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
+	const [isClient, setIsClient] = useState(false); // Add client-side check
+	const isScrolled = useScrollState();
 
 	const navbarVariants = {
 		hidden: { opacity: 0, y: -50 },
@@ -24,8 +28,12 @@ export default function Navbar() {
 	};
 
 	useEffect(() => {
+		setIsClient(true);
 		const handleClickOutside = (event: MouseEvent) => {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+			if (
+				menuRef.current &&
+				!menuRef.current.contains(event.target as Node)
+			) {
 				setIsOpen(false);
 			}
 		};
@@ -36,14 +44,24 @@ export default function Navbar() {
 		};
 	}, [menuRef]);
 
+	// Only render with animations after confirming we're on the client
+	if (!isClient) return null;
+
 	return (
 		<motion.div
-			className="fixed z-50 top-0 left-0 w-full min-[751px]:px-40 min-[651px]:px-20 px-10 py-5"
+			className="fixed z-50 top-0 left-0 w-full"
 			variants={navbarVariants}
 			initial="hidden"
 			animate="visible"
 		>
-			<div className="flex items-center justify-between px-10 py-1 bg-gray backdrop-blur-2xl rounded-full text-white border border-white drop-shadow-md bg-opacity-50">
+			<div
+				className={cn(
+					"flex items-center justify-between px-10 py-1 bg-gray text-white drop-shadow-md",
+					{
+						"backdrop-blur-2xl bg-opacity-50": isScrolled,
+					}
+				)}
+			>
 				<div>
 					<Link href="/">
 						<span className="font-qwitcher_grypen font-bold text-3xl">
@@ -73,7 +91,7 @@ export default function Navbar() {
 				{isOpen && (
 					<motion.div
 						ref={menuRef}
-						className="flex flex-col items-center justify-center bg-gray rounded-lg text-white border border-white drop-shadow-md mt-5 gap-5 py-5"
+						className="flex flex-col items-center justify-center bg-gray rounded-lg text-white rounded-t-none drop-shadow-md gap-5 py-5"
 						initial="hidden"
 						animate="visible"
 						exit="exit"

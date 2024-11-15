@@ -13,15 +13,19 @@ export default function Login() {
 	const { errors } = formState;
 
 	type FormValues = {
+        name: string;
 		email: string;
 		password: string;
+        key: string;
 	};
 
 	const mutation = useMutation({
-		mutationFn: (newLogin: FormValues) => {
-			return axios.post("http://localhost:4000/login", newLogin);
+		mutationFn: (formData: FormValues) => {
+			return axios.post("http://localhost:4000/register", formData);
 		},
 	});
+
+
 
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
@@ -34,7 +38,7 @@ export default function Login() {
 	};
 
 	return (
-		<div
+		<div    
 			className={cn(
 				"flex flex-col",
 				"items-center",
@@ -44,7 +48,7 @@ export default function Login() {
 			)}
 		>
 			<div>
-				<h1 className="text-3xl font-bold font-afacad">Login page</h1>
+				<h1 className="text-3xl font-bold font-afacad">Register page</h1>
 			</div>
 			<form
 				noValidate
@@ -59,6 +63,29 @@ export default function Login() {
 					"rounded-md"
 				)}
 			>
+				<div className={cn("flex justify-between", "space-y-1")}>
+					<label htmlFor="name">Name</label>
+					<span>
+						{errors.name && (
+							<p className="font-bold text-red-500">
+								{errors.name.message}
+							</p>
+						)}
+					</span>
+				</div>
+				<input
+					className={cn(
+						"border border-gray-300",
+						"focus:outline-none focus:ring focus:ring-gray-300",
+						"w-full",
+						"rounded-md p-1"
+					)}
+					type="text"
+					id="name"
+					{...register("name", {
+						required: "Name is required",
+					})}
+				/>
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="email">Email</label>
 					<span>
@@ -80,9 +107,8 @@ export default function Login() {
 					id="email"
 					{...register("email", {
 						required: "Email is required",
-						// validate email address with all types of characters
 						pattern: {
-							value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+							value: /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}]+@[a-zA-Z0-9.-]+(?:\.[a-zA-Z0-9-]+)*$/,
 							message: "Invalid email address",
 						},
 					})}
@@ -114,9 +140,42 @@ export default function Login() {
 						},
 					})}
 				/>
-				<Button>Login</Button>
+				<div className={cn("flex justify-between", "space-y-1")}>
+					<label htmlFor="password">Key</label>
+					<span>
+						{errors.key && (
+							<p className="font-bold text-red-500">
+								{errors.key.message}
+							</p>
+						)}
+					</span>
+				</div>
+				<input
+					className={cn(
+						"border border-gray-300",
+						"focus:outline-none focus:ring focus:ring-gray-300",
+						"w-full",
+						"rounded-md p-1"
+					)}
+					type="password"
+					id="key"
+					{...register("key", {
+						required: "Key is required",
+						minLength: {
+							value: 15,
+							message: "key must be at least 15 characters",
+						},
+                        maxLength: {
+                            value: 15,
+                            message: "key must be at most 15 characters",
+                        }
+					})}
+				/>
+				<Button>
+					Register
+				</Button>
 			</form>
-			<DevTool control={control} />
+			{/* <DevTool control={control} /> */}
 		</div>
 	);
 }
