@@ -2,30 +2,40 @@
 import { cn } from "@/libs/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 import { Button } from "@/Components/Utilities/Buttons";
+import { useAuthStore } from "@/stores/authStore";
 
-export default function Login() {
+function Login() {
+	const router = useRouter();
+
+	const { loginAdmin } = useAuthStore();
 	const form = useForm<FormValues>();
 
-	const { register, control, handleSubmit, formState } = form;
+	const { register, handleSubmit, formState } = form;
 	const { errors } = formState;
 
 	type FormValues = {
-        name: string;
-		email: string;
+		admin_email: string;
 		password: string;
-        key: string;
 	};
 
 	const mutation = useMutation({
-		mutationFn: (formData: FormValues) => {
-			return axios.post("http://localhost:4000/register", formData);
+		mutationFn: (data: FormValues) =>
+			loginAdmin(data.admin_email, data.password),
+		onSuccess: () => {
+			router.push("/admin");
+		},
+		onError: (error: {
+			response?: { data?: { error?: string } };
+			message: string;
+		}) => {
+			console.error(
+				"Login failed:",
+				error.response?.data?.error || error.message
+			);
 		},
 	});
-
-
 
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
@@ -38,7 +48,7 @@ export default function Login() {
 	};
 
 	return (
-		<div    
+		<div
 			className={cn(
 				"flex flex-col",
 				"items-center",
@@ -48,7 +58,7 @@ export default function Login() {
 			)}
 		>
 			<div>
-				<h1 className="text-3xl font-bold font-afacad">Register page</h1>
+				<h1 className="text-3xl font-bold font-afacad">Login page</h1>
 			</div>
 			<form
 				noValidate
@@ -64,34 +74,11 @@ export default function Login() {
 				)}
 			>
 				<div className={cn("flex justify-between", "space-y-1")}>
-					<label htmlFor="name">Name</label>
-					<span>
-						{errors.name && (
-							<p className="font-bold text-red-500">
-								{errors.name.message}
-							</p>
-						)}
-					</span>
-				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
-					type="text"
-					id="name"
-					{...register("name", {
-						required: "Name is required",
-					})}
-				/>
-				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="email">Email</label>
 					<span>
-						{errors.email && (
+						{errors.admin_email && (
 							<p className="font-bold text-red-500">
-								{errors.email.message}
+								{errors.admin_email.message}
 							</p>
 						)}
 					</span>
@@ -105,10 +92,11 @@ export default function Login() {
 					)}
 					type="text"
 					id="email"
-					{...register("email", {
+					{...register("admin_email", {
 						required: "Email is required",
+						// validate email address with all types of characters
 						pattern: {
-							value: /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}]+@[a-zA-Z0-9.-]+(?:\.[a-zA-Z0-9-]+)*$/,
+							value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 							message: "Invalid email address",
 						},
 					})}
@@ -140,42 +128,37 @@ export default function Login() {
 						},
 					})}
 				/>
-				<div className={cn("flex justify-between", "space-y-1")}>
-					<label htmlFor="password">Key</label>
-					<span>
-						{errors.key && (
-							<p className="font-bold text-red-500">
-								{errors.key.message}
-							</p>
-						)}
-					</span>
-				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
-					type="password"
-					id="key"
-					{...register("key", {
-						required: "Key is required",
-						minLength: {
-							value: 15,
-							message: "key must be at least 15 characters",
-						},
-                        maxLength: {
-                            value: 15,
-                            message: "key must be at most 15 characters",
-                        }
-					})}
-				/>
-				<Button>
-					Register
+				<Button type="submit" disabled={mutation.isPending}>
+					{mutation.isPending ? "Logging in..." : "Login"}
 				</Button>
 			</form>
-			<DevTool control={control} />
+			{mutation.isError && (
+				<p className="text-red-500 font-bold">
+					{mutation.error?.response?.data?.error ||
+						"Login failed. Please try again."}
+				</p>
+			)}
+			{/* <DevTool control={control} /> */}
 		</div>
 	);
 }
+
+// const ProtectedRegister = () =>
+// 	WithAuthProtection({
+// 		children: <Login />,
+// 		allowedWhenAuthenticated: "/admin",
+// 	});
+
+// export default ProtectedRegister;
+
+// const ProtectedRegister = () => (
+// 	<WithAuthProtection allowedWhenAuthenticated="/admin">
+// 		<Login />
+// 	</WithAuthProtection>
+// );
+
+// ProtectedRegister.displayName = "ProtectedRegister";
+
+// export default ProtectedRegister;
+
+export default Login;

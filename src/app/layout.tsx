@@ -18,9 +18,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={cn(afacad, raleway, qwitcher_grypen, "antialiased")}>
+			<body
+				className={cn(afacad, raleway, qwitcher_grypen, "antialiased")}
+			>
 				<Navbar />
+
 				<Provider>{children}</Provider>
+
 				<Footer />
 			</body>
 		</html>

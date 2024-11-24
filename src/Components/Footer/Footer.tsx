@@ -7,7 +7,7 @@ export default function Footer() {
 	const year = date.getFullYear();
 
 	return (
-		<footer className="flex flex-col items-center justify-center bg-gray text-white text-center py-4 gap-5 rounded-lg m-5">
+		<footer className="flex flex-col items-center justify-center bg-gray text-white text-center py-4 gap-5">
 			<div className="flex min-[841px]:flex-row flex-col items-center justify-between w-full min-[1025px]:px-40 px-20 min-[841px]:gap-0 gap-5">
 				<div>
 					<Link href="/">
@@ -30,7 +30,7 @@ export default function Footer() {
 					&copy; {year} PankyPics. All rights reserved.
 				</div>
 				<div className="text-sm">
-					Designed by{" "}
+					Designed with ❤️ by{" "}
 					<Link href="">
 						<span>Elevated Codechums</span>
 					</Link>

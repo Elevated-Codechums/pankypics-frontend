@@ -30,7 +30,16 @@ const nextConfig = {
 		return config;
 	},
 	images: {
-		domains: ['cdn.myportfolio.com'],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'cdn.myportfolio.com',
+			},
+			{
+				protocol: 'https',
+				hostname: 'storage.googleapis.com',
+			},
+		],
 	},
 };
 
