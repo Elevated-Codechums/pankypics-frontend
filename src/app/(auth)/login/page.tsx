@@ -2,24 +2,38 @@
 import { cn } from "@/libs/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 import { Button } from "@/Components/Utilities/Buttons";
+import { useAuthStore } from "@/stores/authStore";
 
-export default function Login() {
+function Login() {
+	const router = useRouter();
+
+	const { loginAdmin } = useAuthStore();
 	const form = useForm<FormValues>();
 
-	const { register, control, handleSubmit, formState } = form;
+	const { register, handleSubmit, formState } = form;
 	const { errors } = formState;
 
 	type FormValues = {
-		email: string;
+		admin_email: string;
 		password: string;
 	};
 
 	const mutation = useMutation({
-		mutationFn: (newLogin: FormValues) => {
-			return axios.post("http://localhost:4000/login", newLogin);
+		mutationFn: (data: FormValues) =>
+			loginAdmin(data.admin_email, data.password),
+		onSuccess: () => {
+			router.push("/admin");
+		},
+		onError: (error: {
+			response?: { data?: { error?: string } };
+			message: string;
+		}) => {
+			console.error(
+				"Login failed:",
+				error.response?.data?.error || error.message
+			);
 		},
 	});
 
@@ -62,9 +76,9 @@ export default function Login() {
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="email">Email</label>
 					<span>
-						{errors.email && (
+						{errors.admin_email && (
 							<p className="font-bold text-red-500">
-								{errors.email.message}
+								{errors.admin_email.message}
 							</p>
 						)}
 					</span>
@@ -78,7 +92,7 @@ export default function Login() {
 					)}
 					type="text"
 					id="email"
-					{...register("email", {
+					{...register("admin_email", {
 						required: "Email is required",
 						// validate email address with all types of characters
 						pattern: {
@@ -114,9 +128,37 @@ export default function Login() {
 						},
 					})}
 				/>
-				<Button>Login</Button>
+				<Button type="submit" disabled={mutation.isPending}>
+					{mutation.isPending ? "Logging in..." : "Login"}
+				</Button>
 			</form>
+			{mutation.isError && (
+				<p className="text-red-500 font-bold">
+					{mutation.error?.response?.data?.error ||
+						"Login failed. Please try again."}
+				</p>
+			)}
 			{/* <DevTool control={control} /> */}
 		</div>
 	);
 }
+
+// const ProtectedRegister = () =>
+// 	WithAuthProtection({
+// 		children: <Login />,
+// 		allowedWhenAuthenticated: "/admin",
+// 	});
+
+// export default ProtectedRegister;
+
+// const ProtectedRegister = () => (
+// 	<WithAuthProtection allowedWhenAuthenticated="/admin">
+// 		<Login />
+// 	</WithAuthProtection>
+// );
+
+// ProtectedRegister.displayName = "ProtectedRegister";
+
+// export default ProtectedRegister;
+
+export default Login;

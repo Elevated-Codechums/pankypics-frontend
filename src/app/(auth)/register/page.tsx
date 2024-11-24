@@ -2,30 +2,49 @@
 import { cn } from "@/libs/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, FieldErrors } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 import { Button } from "@/Components/Utilities/Buttons";
+import { useAuthStore } from "@/stores/authStore";
 
-export default function Login() {
+function Register() {
+	const router = useRouter();
+
+	const { registerAdmin } = useAuthStore();
+
+
 	const form = useForm<FormValues>();
 
-	const { register, control, handleSubmit, formState } = form;
+	const { register, handleSubmit, formState } = form;
 	const { errors } = formState;
 
 	type FormValues = {
-        name: string;
-		email: string;
+		admin_name: string;
+		admin_email: string;
 		password: string;
-        key: string;
+		key: string;
 	};
 
 	const mutation = useMutation({
-		mutationFn: (formData: FormValues) => {
-			return axios.post("http://localhost:4000/register", formData);
+		mutationFn: (data: FormValues) =>
+			registerAdmin(
+				data.admin_name,
+				data.admin_email,
+				data.password,
+				data.key
+			),
+		onSuccess: () => {
+			router.push("/admin");
+		},
+		onError: (error: {
+			response?: { data?: { error?: string } };
+			message: string;
+		}) => {
+			console.error(
+				"Login failed:",
+				error.response?.data?.error || error.message
+			);
 		},
 	});
-
-
 
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
@@ -38,7 +57,7 @@ export default function Login() {
 	};
 
 	return (
-		<div    
+		<div
 			className={cn(
 				"flex flex-col",
 				"items-center",
@@ -48,7 +67,9 @@ export default function Login() {
 			)}
 		>
 			<div>
-				<h1 className="text-3xl font-bold font-afacad">Register page</h1>
+				<h1 className="text-3xl font-bold font-afacad">
+					Register page
+				</h1>
 			</div>
 			<form
 				noValidate
@@ -66,9 +87,9 @@ export default function Login() {
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="name">Name</label>
 					<span>
-						{errors.name && (
+						{errors.admin_name && (
 							<p className="font-bold text-red-500">
-								{errors.name.message}
+								{errors.admin_name.message}
 							</p>
 						)}
 					</span>
@@ -82,16 +103,16 @@ export default function Login() {
 					)}
 					type="text"
 					id="name"
-					{...register("name", {
+					{...register("admin_name", {
 						required: "Name is required",
 					})}
 				/>
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="email">Email</label>
 					<span>
-						{errors.email && (
+						{errors.admin_email && (
 							<p className="font-bold text-red-500">
-								{errors.email.message}
+								{errors.admin_email.message}
 							</p>
 						)}
 					</span>
@@ -105,7 +126,7 @@ export default function Login() {
 					)}
 					type="text"
 					id="email"
-					{...register("email", {
+					{...register("admin_email", {
 						required: "Email is required",
 						pattern: {
 							value: /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}]+@[a-zA-Z0-9.-]+(?:\.[a-zA-Z0-9-]+)*$/,
@@ -165,17 +186,27 @@ export default function Login() {
 							value: 15,
 							message: "key must be at least 15 characters",
 						},
-                        maxLength: {
-                            value: 15,
-                            message: "key must be at most 15 characters",
-                        }
+						maxLength: {
+							value: 15,
+							message: "key must be at most 15 characters",
+						},
 					})}
 				/>
-				<Button>
-					Register
-				</Button>
+				<Button>Register</Button>
 			</form>
 			{/* <DevTool control={control} /> */}
 		</div>
 	);
 }
+
+// const ProtectedRegister = () => (
+// 	<WithAuthProtection allowedWhenAuthenticated="/admin">
+// 		<Register />
+// 	</WithAuthProtection>
+// );
+
+// ProtectedRegister.displayName = "ProtectedRegister";
+
+// export default ProtectedRegister;
+
+export default Register;
