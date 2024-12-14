@@ -5,13 +5,12 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Button } from "@/Components/Utilities/Buttons";
 import { useAuthStore } from "@/stores/authStore";
+import { Input } from "@/Components/Utilities/Inputs";
 
 function Register() {
 	const router = useRouter();
 
 	const { registerAdmin } = useAuthStore();
-
-
 	const form = useForm<FormValues>();
 
 	const { register, handleSubmit, formState } = form;
@@ -40,7 +39,7 @@ function Register() {
 			message: string;
 		}) => {
 			console.error(
-				"Login failed:",
+				"Registration failed:",
 				error.response?.data?.error || error.message
 			);
 		},
@@ -66,11 +65,6 @@ function Register() {
 				"gap-4"
 			)}
 		>
-			<div>
-				<h1 className="text-3xl font-bold font-afacad">
-					Register page
-				</h1>
-			</div>
 			<form
 				noValidate
 				onSubmit={handleSubmit(onSubmit, onErrors)}
@@ -78,12 +72,20 @@ function Register() {
 					"flex flex-col",
 					"font-raleway",
 					"space-y-4",
-					"w-[50%]",
-					"p-4",
+					"w-[30%]",
+					"p-10",
 					"border border-gray-300",
-					"rounded-md"
+					"rounded-xl",
+					"bg-black",
+					"text-white"
 				)}
 			>
+				<div className="text-center p-5">
+					<h1 className="text-5xl font-bold font-afacad">
+						Register
+					</h1>
+				</div>
+				<div className={cn("w-[1px] bg-white h-full")}></div>
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="name">Name</label>
 					<span>
@@ -94,13 +96,7 @@ function Register() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
+				<Input
 					type="text"
 					id="name"
 					{...register("admin_name", {
@@ -117,19 +113,13 @@ function Register() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
+				<Input
 					type="text"
 					id="email"
 					{...register("admin_email", {
 						required: "Email is required",
 						pattern: {
-							value: /^[a-zA-Z0-9.!#$%&'*+/=?^`{|}]+@[a-zA-Z0-9.-]+(?:\.[a-zA-Z0-9-]+)*$/,
+							value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 							message: "Invalid email address",
 						},
 					})}
@@ -144,13 +134,7 @@ function Register() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
+				<Input
 					type="password"
 					id="password"
 					{...register("password", {
@@ -162,7 +146,7 @@ function Register() {
 					})}
 				/>
 				<div className={cn("flex justify-between", "space-y-1")}>
-					<label htmlFor="password">Key</label>
+					<label htmlFor="key">Key</label>
 					<span>
 						{errors.key && (
 							<p className="font-bold text-red-500">
@@ -171,42 +155,47 @@ function Register() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
+				<Input
 					type="password"
 					id="key"
 					{...register("key", {
 						required: "Key is required",
 						minLength: {
 							value: 15,
-							message: "key must be at least 15 characters",
+							message: "Key must be at least 15 characters",
 						},
 						maxLength: {
 							value: 15,
-							message: "key must be at most 15 characters",
+							message: "Key must be at most 15 characters",
 						},
 					})}
 				/>
-				<Button>Register</Button>
+				<div
+					className={cn(
+						"w-full flex items-center justify-center pt-16"
+					)}
+				>
+					<Button
+						className={cn(
+							"w-[50%]",
+							"bg-white text-black hover:bg-gray hover:text-white"
+						)}
+						type="submit"
+						disabled={mutation.isPending}
+					>
+						{mutation.isPending ? "Registering..." : "Register"}
+					</Button>
+				</div>
 			</form>
+			{mutation.isError && (
+				<p className="text-red-500 font-bold">
+					{mutation.error?.response?.data?.error ||
+						"Registration failed. Please try again."}
+				</p>
+			)}
 			{/* <DevTool control={control} /> */}
 		</div>
 	);
 }
-
-// const ProtectedRegister = () => (
-// 	<WithAuthProtection allowedWhenAuthenticated="/admin">
-// 		<Register />
-// 	</WithAuthProtection>
-// );
-
-// ProtectedRegister.displayName = "ProtectedRegister";
-
-// export default ProtectedRegister;
 
 export default Register;

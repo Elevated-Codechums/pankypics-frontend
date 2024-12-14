@@ -5,6 +5,7 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Button } from "@/Components/Utilities/Buttons";
 import { useAuthStore } from "@/stores/authStore";
+import { Input } from "@/Components/Utilities/Inputs";
 
 function Login() {
 	const router = useRouter();
@@ -57,9 +58,6 @@ function Login() {
 				"gap-4"
 			)}
 		>
-			<div>
-				<h1 className="text-3xl font-bold font-afacad">Login page</h1>
-			</div>
 			<form
 				noValidate
 				onSubmit={handleSubmit(onSubmit, onErrors)}
@@ -67,12 +65,20 @@ function Login() {
 					"flex flex-col",
 					"font-raleway",
 					"space-y-4",
-					"w-[50%]",
-					"p-4",
+					"w-[30%]",
+					"p-10",
 					"border border-gray-300",
-					"rounded-md"
+					"rounded-xl",
+					"bg-black",
+					"text-white"
 				)}
 			>
+				<div className="text-center p-5">
+					<h1 className="text-5xl font-bold font-afacad">
+						Admin Login
+					</h1>
+				</div>
+				<div className={cn("w-[1px] bg-white h-full")}></div>
 				<div className={cn("flex justify-between", "space-y-1")}>
 					<label htmlFor="email">Email</label>
 					<span>
@@ -83,14 +89,8 @@ function Login() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
-					type="text"
+				<Input
+					type="next"
 					id="email"
 					{...register("admin_email", {
 						required: "Email is required",
@@ -111,13 +111,7 @@ function Login() {
 						)}
 					</span>
 				</div>
-				<input
-					className={cn(
-						"border border-gray-300",
-						"focus:outline-none focus:ring focus:ring-gray-300",
-						"w-full",
-						"rounded-md p-1"
-					)}
+				<Input
 					type="password"
 					id="password"
 					{...register("password", {
@@ -128,9 +122,22 @@ function Login() {
 						},
 					})}
 				/>
-				<Button type="submit" disabled={mutation.isPending}>
-					{mutation.isPending ? "Logging in..." : "Login"}
-				</Button>
+				<div
+					className={cn(
+						"w-full flex items-center justify-center pt-16"
+					)}
+				>
+					<Button
+						className={cn(
+							"w-[50%]",
+							"bg-white text-black hover:bg-gray hover:text-white"
+						)}
+						type="submit"
+						disabled={mutation.isPending}
+					>
+						{mutation.isPending ? "Logging in..." : "Login"}
+					</Button>
+				</div>
 			</form>
 			{mutation.isError && (
 				<p className="text-red-500 font-bold">
@@ -142,23 +149,5 @@ function Login() {
 		</div>
 	);
 }
-
-// const ProtectedRegister = () =>
-// 	WithAuthProtection({
-// 		children: <Login />,
-// 		allowedWhenAuthenticated: "/admin",
-// 	});
-
-// export default ProtectedRegister;
-
-// const ProtectedRegister = () => (
-// 	<WithAuthProtection allowedWhenAuthenticated="/admin">
-// 		<Login />
-// 	</WithAuthProtection>
-// );
-
-// ProtectedRegister.displayName = "ProtectedRegister";
-
-// export default ProtectedRegister;
 
 export default Login;
