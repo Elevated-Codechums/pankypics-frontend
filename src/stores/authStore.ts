@@ -2,8 +2,8 @@ import { create } from "zustand";
 import axiosClient from "@/libs/axiosClient";
 
 interface Admin {
-	admin_name: string;
-	admin_email: string;
+	name: string;
+	email: string;
 }
 
 interface AuthStore {
@@ -13,12 +13,12 @@ interface AuthStore {
 	isLoading: boolean;
 	isCheckingAuth: boolean;
 	registerAdmin: (
-		name: string,
-		email: string,
+		admin_name: string,
+		admin_email: string,
 		password: string,
 		key: string
 	) => Promise<void>;
-	loginAdmin: (email: string, password: string) => Promise<void>;
+	loginAdmin: (admin_email: string, password: string) => Promise<void>;
 	logoutAdmin: () => Promise<void>;
 	checkAuth: () => Promise<void>;
 }
@@ -31,16 +31,16 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	isCheckingAuth: true,
 
 	registerAdmin: async (
-		name: string,
-		email: string,
+		admin_name: string,
+		admin_email: string,
 		password: string,
 		key: string
 	) => {
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axiosClient.post("/register", {
-				name,
-				email,
+				admin_name,
+				admin_email,
 				password,
 				key,
 			});
@@ -64,7 +64,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	loginAdmin: async (admin_email: string, password: string) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axiosClient.post("/login", {
+			const response = await axiosClient.post("/api/auth/login", {
 				admin_email,
 				password,
 			});
@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	logoutAdmin: async () => {
 		set({ isLoading: true, error: null });
 		try {
-			await axiosClient.post("/logout");
+			await axiosClient.post("/api/auth/logout");
 			set({
 				admin: null,
 				isAuthenticated: false,
@@ -107,7 +107,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	checkAuth: async () => {
 		set({ isCheckingAuth: true });
 		try {
-			const response = await axiosClient.get("/check-auth");
+			const response = await axiosClient.get("/api/auth/check-auth");
 			set({
 				admin: response.data.admin,
 				isAuthenticated: true,

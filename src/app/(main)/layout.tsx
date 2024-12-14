@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { cn } from "@/libs/utils";
 import { afacad, qwitcher_grypen, raleway } from "@/libs/fonts";
 import Provider from "@/libs/Providers";
 import Navbar from "@/Components/Header/Navbar";
 import Footer from "@/Components/Footer/Footer";
+import '../globals.css';
+
 
 export const metadata: Metadata = {
 	title: "PankyPics",
@@ -21,10 +22,8 @@ export default function RootLayout({
 			<body
 				className={cn(afacad, raleway, qwitcher_grypen, "antialiased")}
 			>
-				<Navbar />
-
+				{/* <Navbar /> */}
 				<Provider>{children}</Provider>
-
 				<Footer />
 			</body>
 		</html>
