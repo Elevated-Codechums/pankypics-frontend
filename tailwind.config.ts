@@ -14,6 +14,10 @@ module.exports = {
 				white: "#f2f2f2",
 				black: "#101010",
 				gray: "#2f2f2f",
+				"lightbrown": "#814E36",
+				"darkbrown": "#5A301C",
+				"headtext":"#D3C9B7",
+				"backgroundwhite": "#D1CCC3"
 			},
 			fontFamily: {
 				afacad: ["var(--font-afacad)"],
