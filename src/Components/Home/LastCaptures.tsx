@@ -6,7 +6,7 @@ export default function LastCaptures(){
                 <div className='h-[90%] w-[94%] bg-darkbrown rounded-3xl gap-[200px] flex  flex-col'>
                 <h1 className=' justify-center text-7xl ml-[60px] mt-[50px] text-headtext  h-[100px]   font-bold'>My Latest Captures</h1>
                     <div className='h-[45%] w-[90%] ml-[50px] mt-[-145px] bg-backgroundwhite rounded-3xl flex flex-row gap-5  '>
-                    <div className='rounded-3xl flex flex-row gap-6 ml-[100px] align-center justify-center items-center'>    
+                    <div className='rounded-3xl flex flex-row gap-6 ml-[100px]  justify-center items-center'>    
                         <Image 
                         
                         src="https://images.unsplash.com/photo-1618945525824-083e36be3aa2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDY4fHx8ZW58MHx8fHx8"
