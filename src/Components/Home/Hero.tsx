@@ -1,10 +1,14 @@
 "use client";
 import Image from "next/image"
 import  {motion} from "framer-motion"
-
+import Navbar from "../Header/Navbar";
+import Gallery from "../Gallery/Gallery";
 export default function Hero(){
     return(
+        <>
         
+        
+        <Navbar />
          <div className='h-screen flex justify-center items-center bg-lightbrown '> 
                         <div className='h-[90%] w-[94%] bg-darkbrown rounded-3xl flex'>
                             <div>
@@ -16,7 +20,7 @@ export default function Hero(){
 
                                    >
                                    <span>Memories</span>
-                                    </motion.div>  <span className='text-headtext text-base ml-[80px] italic'>photographer's paradise</span></h1>
+                                    </motion.div></h1>
                             </div>
                             <div>
                                <motion.div 
@@ -36,10 +40,10 @@ export default function Hero(){
                                 initial={{opacity:0}}
                                 animate={{opacity:1}}
                                 transition={{duration:0.5}}>
-                                <Image className='top-20 absolute z-10 rounded-3xl right-20'
+                                <Image className='top-48 absolute z-10 rounded-3xl right-40'
                                 
                                 src= "https://images.unsplash.com/photo-1732373870219-ac6444949471?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                width = {350}
+                                width = {250}
                                 height = {70}
                                 alt =''
                                 />
@@ -50,6 +54,7 @@ export default function Hero(){
                             </div>
                         </div>
                     </div>
+                    </>
                     
     )
 }

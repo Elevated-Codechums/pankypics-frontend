@@ -6,6 +6,7 @@ import About from '@/Components/Home/About';
 import Scrolllink from '@/Components/Home/ScrollLink';
 import LastCaptures from '@/Components/Home/LastCaptures';
 import End from '@/Components/Home/End';
+import Gallery from '@/Components/Gallery/Gallery';
 
 export default function Home() {
     return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Album/>
         <About/>
         <Scrolllink/>
+        <Gallery/>
         <LastCaptures/>
         <End/>
         </>
