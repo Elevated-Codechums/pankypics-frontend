@@ -1,19 +1,15 @@
-import Link from "next/link";
-import Instagram from "../../assets/instagram.svg";
-import Menu from "./Menu";
 import HamburgerOpen from "../../assets/hamburger-open.svg";
 import HamburgerClose from "../../assets/hamburger-close.svg";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-
 import useScrollState from "@/Hooks/useScrollState";
-import { racing_sans } from "@/libs/fonts";
+import Instagram from "../../assets/instagram.svg";
+import Link from "next/link";
+import { cn } from "@/libs/utils";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [isClient, setIsClient] = useState(false);
   const isScrolled = useScrollState();
 
   const navbarVariants = {
@@ -22,13 +18,13 @@ export default function Navbar() {
   };
 
   const menuVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } },
   };
 
+  // This effect is optional since the overlay now handles closing on click
   useEffect(() => {
-    setIsClient(true);
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -39,67 +35,121 @@ export default function Navbar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuRef]);
-
-  if (!isClient) return null;
+  }, []);
 
   return (
     <motion.div
-      className="fixed z-50 top-0 left-0 w-full"
+      className={cn(
+        "fixed z-50 top-0 left-0 w-full transition-all pt-7 duration-300",
+        isScrolled && "shadow-lg backdrop-blur-md"
+      )}
       variants={navbarVariants}
       initial="hidden"
       animate="visible"
     >
-      <div
-        className={`flex items-center justify-center px-10 mt-10 py-3 text-2xl bg-brown-900 text-headtext drop-shadow-md ${
-          isScrolled ? "opacity-0" : ""
-        }`}
-      >
-        
-        <div className="hidden md:flex items-center space-x-8">
-          <Link href="/my-favourites">My Favourites</Link>
-          <Link href="/albums">Albums</Link>
-		  <div>
-          <Link href="/">
-            <span className="font-racing_sans font-bold text-6xl">PankyPics</span>
+      <div className="flex items-center px-4 md:px-64 justify-between py-4">
+        {/* Left Section */}
+        <div
+          className={cn(
+            "hidden md:flex items-center gap-10 space-x-6 text-xl text-headtext"
+          )}
+        >
+          <Link href="/my-favourites" className="hover:underline">
+            My Favourites
+          </Link>
+          <Link href="/albums" className="hover:underline">
+            Albums
           </Link>
         </div>
-          <Link href="/about-me">About Me</Link>
-          <Link href="/contact">Contact</Link>
-        </div>
-        <div className="hidden md:flex">
-          <Link href="/">
+
+        {/* Center Section */}
+        <Link
+          href="/"
+          className={cn(
+            "font-racing_sans text-4xl md:text-6xl gap-10 text-headtext mx-4 md:mx-12"
+          )}
+        >
+          PankyPics
+        </Link>
+
+        {/* Right Section */}
+        <div
+          className={cn(
+            "hidden md:flex items-center space-x-6 gap-10 text-xl text-headtext"
+          )}
+        >
+          <Link href="/about-me" className="hover:underline">
+            About Me
+          </Link>
+          <Link href="/contact" className="hover:underline">
+            Contact
+          </Link>
+          <Link href="/" className="hover:scale-110 transition-transform">
             <Instagram />
           </Link>
         </div>
-        <div className="md:hidden flex hover:cursor-pointer">
+
+        {/* Mobile Hamburger */}
+        <div className="md:hidden flex items-center">
           {isOpen ? (
-            <HamburgerClose onClick={() => setIsOpen(!isOpen)} />
+            <HamburgerClose
+              onClick={() => setIsOpen(false)}
+              className={cn("cursor-pointer text-white")}
+            />
           ) : (
-            <HamburgerOpen onClick={() => setIsOpen(!isOpen)} />
+            <HamburgerOpen
+              onClick={() => setIsOpen(true)}
+              className={cn("cursor-pointer text-white")}
+            />
           )}
         </div>
       </div>
+
+      {/* Mobile Menu with Background Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            ref={menuRef}
-            className="flex flex-col items-center justify-center bg-brown-900 text-headtext drop-shadow-md gap-5 py-5"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={menuVariants}
-          >
-            <Link href="/my-favourites">My Favourites</Link>
-            <Link href="/albums">Albums</Link>
-            <Link href="/about-me">About Me</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/">
-              <span className="mt-5">
+          <>
+            {/* Background overlay with blur */}
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-40"
+              onClick={() => setIsOpen(false)}
+            />
+            {/* Mobile menu */}
+            <motion.div
+              key="mobileMenu"
+              ref={menuRef}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={menuVariants}
+              className={cn(
+                "fixed top-0 left-0 right-0 flex flex-col items-center bg-brown-900 text-headtext gap-4 py-6 md:hidden z-50"
+              )}
+            >
+              <Link href="/my-favourites" className="text-xl hover:underline">
+                My Favourites
+              </Link>
+              <Link href="/albums" className="text-xl hover:underline">
+                Albums
+              </Link>
+              <Link href="/about-me" className="text-xl hover:underline">
+                About Me
+              </Link>
+              <Link href="/contact" className="text-xl hover:underline">
+                Contact
+              </Link>
+              <Link
+                href="/"
+                className="mt-4 hover:scale-110 transition-transform"
+              >
                 <Instagram />
-              </span>
-            </Link>
-          </motion.div>
+              </Link>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.div>

@@ -1,3 +1,5 @@
+import { racing_sans } from "@/libs/fonts";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
@@ -23,6 +25,7 @@ module.exports = {
 				afacad: ["var(--font-afacad)"],
 				raleway: ["var(--font-raleway)"],
 				qwitcher_grypen: ["var(--font-qwitcher-grypen)"],
+				racing_sans: ["var(--font-racing-sans)"],
 			},
 		},
 	},

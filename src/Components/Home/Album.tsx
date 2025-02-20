@@ -1,93 +1,125 @@
 "use client";
-import {motion} from "framer-motion";
-import Image from "next/image"
+import { motion } from "framer-motion";
+import Image from "next/image";
 
+export default function Album() {
+    return (
+        <div className="h-screen flex justify-center items-center bg-backgroundwhite">
+            {/* Outer container with brown background */}
+            <div
+                className="
+                    relative
+                    w-[95%]
+                    max-w-[1450px]
+                    bg-darkbrown
+                    rounded-3xl
+                    px-6 py-6
+                    h-auto
+                    md:h-[700px]
+                    md:w-full
+                    overflow-hidden
+                "
+            >
+                {/* Title */}
+                <h1 className="text-3xl md:text-4xl text-headtext font-bold">
+                    Some of my Albums
+                </h1>
 
-export default function Album(){
-    return(
-        <div className='h-screen flex justify-center items-center bg-backgroundwhite '>
-                        <div className='h-[90%] w-[94%] bg-darkbrown rounded-3xl flex '>
-                            <h1 className=' justify-center text-7xl ml-[60px] mt-[50px] text-headtext  h-[100px]  font-bold'>Some of My Albums</h1>
-                            <div className='flex flex-row  h-[20rem] mt-[250px]  justify-center items-center   w-[20rem]'>
-                                <div className="ml-[-500]bg-white h-[20rem] w-[20rem] rounded-3xl">
-                                
-                                    <motion.button 
-                                    whileHover={{scale:1.1}}
-                                    whileTap={{scale:0.9}}
-                                    className='text-3xl  ml-[-550px] flex flex-col font-bold text-headtext'>
-                                       <a href="#">.Portrait<br /></a> 
-                                    </motion.button>
-                                    <motion.button 
-                                    whileHover={{scale:1.1}}
-                                    whileTap={{scale:0.9}}
-                                    className='text-3xl  ml-[-550px] flex flex-col font-bold text-headtext'>
-                                       <a href="#">.Landscape<br /></a> 
-                                    </motion.button>
-                                    <motion.button 
-                                    whileHover={{scale:1.1}}
-                                    whileTap={{scale:0.9}}
-                                    className='text-3xl  ml-[-550px] flex flex-col font-bold text-headtext'>
-                                       <a href="#">.Wildlife<br /></a> 
-                                    </motion.button>
-                                    <motion.button 
-                                    whileHover={{scale:1.1}}
-                                    whileTap={{scale:0.9}}
-                                    className='text-3xl  ml-[-550px] flex flex-col font-bold text-headtext'>
-                                        <a href="#">.Candid<br /></a>
-                                    </motion.button>
-                                    
-                                </div>
-                                
-                                <div className='flex w-130 gap-5 ml-[-300px] flex-row'>
-                                    <motion.div
-                                    whileHover={{
-                                        zoom:1.1,
-                                        cursor: 'pointer'
-                                    }}
-                                    >
-                                    <Image className="rounded-3xl"
-                                    
-                                    src="https://images.unsplash.com/photo-1733919504972-4486ea3ddc89?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw2NXx8fGVufDB8fHx8fA%3D%3D"
-                                    height={70}
-                                    width={1890}
-                                    alt=''
-                                    
-                                    />
-                                    </motion.div>
-                                    <motion.div
-                                    whileHover={{
-                                        zoom: 1.1,
-                                        cursor: 'pointer'
-                                    }}
-                                    >
-                                    <Image  className="rounded-3xl"
-                                    
-                                    src="https://images.unsplash.com/photo-1729731322082-c0a7c32229aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3Mnx8fGVufDB8fHx8fA%3D%3D"
-                                    height={60}
-                                    width={1890}
-                                    alt=''/>
-                                    </motion.div>
-
-                                    <motion.div
-                                    whileHover={{   
-                                        cursor: 'pointer',  
-                                        zoom: 1.1,}}>
-                                    <Image className="rounded-3xl"
-                                        src="https://images.unsplash.com/photo-1729731322911-2635f53bb7e5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEzfHx8ZW58MHx8fHx8"
-                                        height={100}
-                                        width={1890}
-                                        alt=''/>
-                                    </motion.div>
-
-                                   
-                                    
-                                    
-                                    
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
+                {/* Main content: stack (column) on small, row on md+ */}
+                <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-center md:gap-10">
+                    {/* Left column: album categories */}
+                    <div className="flex flex-col space-y-4">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="text-2xl md:text-3xl font-bold text-headtext"
+                        >
+                            <a href="#">.Portrait</a>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="text-2xl md:text-3xl font-bold text-headtext"
+                        >
+                            <a href="#">.Landscape</a>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="text-2xl md:text-3xl font-bold text-headtext"
+                        >
+                            <a href="#">.Wildlife</a>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="text-2xl md:text-3xl font-bold text-headtext"
+                        >
+                            <a href="#">.Candid</a>
+                        </motion.button>
                     </div>
-    )
+
+                    {/* Right side: images */}
+                    <div className="flex flex-row flex-wrap gap-4 mt-6 md:mt-0">
+                        {/* 1st image */}
+                        <motion.div
+                            whileHover={{ scale: 1.05, cursor: "pointer" }}
+                            className="relative w-[140px] h-[200px] md:w-[200px] md:h-[300px] rounded-3xl overflow-hidden"
+                        >
+                            <Image
+                                src="https://images.unsplash.com/photo-1733919504972-4486ea3ddc89?w=500&auto=format&fit=crop&q=60"
+                                alt="Statue silhouette at sunset"
+                                fill
+                                className="object-cover"
+                            />
+                        </motion.div>
+
+                        {/* 2nd image */}
+                        <motion.div
+                            whileHover={{ scale: 1.05, cursor: "pointer" }}
+                            className="relative w-[140px] h-[200px] md:w-[200px] md:h-[300px] rounded-3xl overflow-hidden"
+                        >
+                            <Image
+                                src="https://images.unsplash.com/photo-1729731322082-c0a7c32229aa?w=500&auto=format&fit=crop&q=60"
+                                alt="Ocean sunset"
+                                fill
+                                className="object-cover"
+                            />
+                        </motion.div>
+
+                        {/* 3rd image */}
+                        <motion.div
+                            whileHover={{ scale: 1.05, cursor: "pointer" }}
+                            className="relative w-[140px] h-[200px] md:w-[200px] md:h-[300px] rounded-3xl overflow-hidden"
+                        >
+                            <Image
+                                src="https://images.unsplash.com/photo-1729731322911-2635f53bb7e5?w=500&auto=format&fit=crop&q=60"
+                                alt="Pier over the ocean"
+                                fill
+                                className="object-cover"
+                            />
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* "View More" link */}
+                <div className="block md:hidden mt-6 text-right">
+                    <a
+                        href="#"
+                        className="text-white text-lg font-medium hover:underline"
+                    >
+                        View More
+                    </a>
+                </div>
+                <div className="hidden md:block absolute bottom-6 right-8">
+                    <a
+                        href="#"
+                        className="text-white text-xl hover:underline font-medium"
+                    >
+                        View More
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
 }
