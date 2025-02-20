@@ -7,7 +7,7 @@ export default function Album(){
     return(
         <div className='h-screen flex justify-center items-center bg-backgroundwhite '>
                         <div className='h-[90%] w-[94%] bg-darkbrown rounded-3xl flex '>
-                            <h1 className=' justify-center text-7xl ml-[60px] mt-[50px] text-headtext  h-[100px]  font-bold'>Some of My Albums</h1>
+                            <h1 className=' text-3xl ml-[60px] mt-[50px] text-headtext md:7xl h-[100px]  font-bold'>Some of My Albums</h1>
                             <div className='flex flex-row  h-[20rem] mt-[250px]  justify-center items-center   w-[20rem]'>
                                 <div className="ml-[-500]bg-white h-[20rem] w-[20rem] rounded-3xl">
                                 

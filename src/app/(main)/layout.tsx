@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cn } from "@/libs/utils";
-import { afacad, qwitcher_grypen, raleway } from "@/libs/fonts";
+import { afacad, qwitcher_grypen, raleway, racing_sans } from "@/libs/fonts";
 import Provider from "@/libs/Providers";
 import Navbar from "@/Components/Header/Navbar";
 import Footer from "@/Components/Footer/Footer";
@@ -20,7 +20,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={cn(afacad, raleway, qwitcher_grypen, "antialiased")}
+				className={cn(afacad, raleway,racing_sans, qwitcher_grypen, "antialiased")}
 			>
 				{/* <Navbar /> */}
 				<Provider>{children}</Provider>
