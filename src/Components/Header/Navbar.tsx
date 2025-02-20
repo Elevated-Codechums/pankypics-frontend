@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useScrollState from "@/Hooks/useScrollState";
 import Instagram from "../../assets/instagram.svg";
 import Link from "next/link";
-import { cn } from "@/libs/utils"; 
-
+import { cn } from "@/libs/utils";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +23,7 @@ export default function Navbar() {
     exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } },
   };
 
+  // This effect is optional since the overlay now handles closing on click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -47,7 +47,7 @@ export default function Navbar() {
       initial="hidden"
       animate="visible"
     >
-      <div className="flex  items-center px-64  justify-between py-4">
+      <div className="flex items-center px-4 md:px-64 justify-between py-4">
         {/* Left Section */}
         <div
           className={cn(
@@ -66,7 +66,7 @@ export default function Navbar() {
         <Link
           href="/"
           className={cn(
-            "font-racing_sans text-6xl   gap-10 text-headtext mx-12"
+            "font-racing_sans text-4xl md:text-6xl gap-10 text-headtext mx-4 md:mx-12"
           )}
         >
           PankyPics
@@ -105,38 +105,51 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu with Background Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            ref={menuRef}
-            className={cn(
-              "flex flex-col items-center bg-brown-900 text-headtext gap-4 py-6 md:hidden"
-            )}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={menuVariants}
-          >
-            <Link href="/my-favourites" className="text-xl hover:underline">
-              My Favourites
-            </Link>
-            <Link href="/albums" className="text-xl hover:underline">
-              Albums
-            </Link>
-            <Link href="/about-me" className="text-xl hover:underline">
-              About Me
-            </Link>
-            <Link href="/contact" className="text-xl hover:underline">
-              Contact
-            </Link>
-            <Link
-              href="/"
-              className="mt-4 hover:scale-110 transition-transform"
+          <>
+            {/* Background overlay with blur */}
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-40"
+              onClick={() => setIsOpen(false)}
+            />
+            {/* Mobile menu */}
+            <motion.div
+              key="mobileMenu"
+              ref={menuRef}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={menuVariants}
+              className={cn(
+                "fixed top-0 left-0 right-0 flex flex-col items-center bg-brown-900 text-headtext gap-4 py-6 md:hidden z-50"
+              )}
             >
-              <Instagram />
-            </Link>
-          </motion.div>
+              <Link href="/my-favourites" className="text-xl hover:underline">
+                My Favourites
+              </Link>
+              <Link href="/albums" className="text-xl hover:underline">
+                Albums
+              </Link>
+              <Link href="/about-me" className="text-xl hover:underline">
+                About Me
+              </Link>
+              <Link href="/contact" className="text-xl hover:underline">
+                Contact
+              </Link>
+              <Link
+                href="/"
+                className="mt-4 hover:scale-110 transition-transform"
+              >
+                <Instagram />
+              </Link>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.div>
